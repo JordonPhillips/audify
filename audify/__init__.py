@@ -16,17 +16,25 @@ def main():
     parser.add_argument('-o', '--output_filename', required=True)
     parser.add_argument('-v', '--voice', default='Amy')
     args = parser.parse_args()
-    speechify(
+    audify(
         input_filename=args.input_filename,
         output_filename=args.output_filename,
         voice=args.voice,
     )
 
 
-def speechify(input_filename, output_filename, voice):
+def audify(input_filename, output_filename, voice):
+    if input_filename == '-':
+        audify_fileobj(sys.stdin, output_filename, voice)
+    else:
+        with open(input_filename) as f:
+            audify_fileobj(f, output_filename, voice)
+
+
+def audify_fileobj(fileobj, output_filename, voice):
     tempdir = tempfile.mkdtemp()
     try:
-        chunk_files = _speechify_chunks(input_filename, voice, tempdir)
+        chunk_files = _audify_chunks(fileobj, voice, tempdir)
         _stich_chunks(chunk_files, output_filename)
     finally:
         shutil.rmtree(tempdir)
@@ -44,16 +52,7 @@ def _stich_chunks(chunk_files, output_filename):
     if audio:
         audio.export(output_filename, format='mp3')
 
-
-def _speechify_chunks(filename, voice, tempdir):
-    if filename == '-':
-        return _speechify_fileobj(sys.stdin, voice, tempdir)
-    else:
-        with open(filename) as f:
-            return _speechify_fileobj(f, voice, tempdir)
-
-
-def _speechify_fileobj(fileobj, voice, tempdir):
+def _audify_chunks(fileobj, voice, tempdir):
     polly = boto3.client('polly')
     chunk_files = []
     for i, chunk in enumerate(_read_input(fileobj)):
