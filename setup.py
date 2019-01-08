@@ -11,6 +11,7 @@ setup(
         'A simple command line tool to transform text to speech with AWS.'
     ),
     long_description=README,
+    long_description_content_type="text/markdown",
     author='Jordon Phillips',
     author_email='pypi@jkphillips.me',
     license='MIT',
