@@ -11,10 +11,32 @@ from pydub import AudioSegment
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--input-filename', required=True)
-    parser.add_argument('-o', '--output_filename', required=True)
-    parser.add_argument('-v', '--voice', default='Amy')
+    parser = argparse.ArgumentParser(description=(
+        'A simple command line tool that uses Amazon Polly to convert text '
+        'files into mp3 files.'
+    ))
+    parser.add_argument(
+        '-i', '--input-filename', required=True,
+        help=(
+            'The file containing the text to convert to speech. If - is '
+            'provided, text will be read from stdin.'
+        )
+    )
+    parser.add_argument(
+        '-o', '--output-filename', required=True,
+        help=(
+            'The output file name. This file will be in mp3 format.'
+        )
+    )
+    parser.add_argument(
+        '-v', '--voice', default='Amy',
+        help=(
+            'The voice to read the text in. Any voice supported by Amazon '
+            'Polly is valid. The default voice is Amy. Other voices can be '
+            'found on the docs for Polly: '
+            'https://docs.aws.amazon.com/polly/latest/dg/voicelist.html'
+        )
+    )
     args = parser.parse_args()
     audify(
         input_filename=args.input_filename,
@@ -24,6 +46,20 @@ def main():
 
 
 def audify(input_filename, output_filename, voice):
+    """Convert a text file into spoken mp3 file.
+
+    :param input_filename: A text file to convert.
+    :type input_filename: str
+
+    :param output_filename: The name of the resulting mp3 file.
+    :type output_filename: str
+
+    :param voice: The voice to read the text in. Any voice supported by Amazon
+        Polly is valid. The default voice is Amy. Other voices can be found on
+        the docs for Polly:
+        https://docs.aws.amazon.com/polly/latest/dg/voicelist.html
+    :type voice: str
+    """
     if input_filename == '-':
         audify_fileobj(sys.stdin, output_filename, voice)
     else:
@@ -32,6 +68,20 @@ def audify(input_filename, output_filename, voice):
 
 
 def audify_fileobj(fileobj, output_filename, voice):
+    """Convert a file-like object containing text into spoken mp3 file.
+
+    :param fileobj: A file-like object containg text to convert.
+    :type fileobj: file-like object
+
+    :param output_filename: The name of the resulting mp3 file.
+    :type output_filename: str
+
+    :param voice: The voice to read the text in. Any voice supported by Amazon
+        Polly is valid. The default voice is Amy. Other voices can be found on
+        the docs for Polly:
+        https://docs.aws.amazon.com/polly/latest/dg/voicelist.html
+    :type voice: str
+    """
     tempdir = tempfile.mkdtemp()
     try:
         chunk_files = _audify_chunks(fileobj, voice, tempdir)
