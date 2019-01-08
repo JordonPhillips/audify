@@ -50,7 +50,8 @@ from audify import audify_fileobj
 audify_fileobj(
     fileobj=io.StringIO('Hello World'),
     output_filename='output.mp3',
-)```
+)
+```
 
 Any voice supported by Amazon Polly can be used:
 
@@ -65,4 +66,5 @@ audify(
     input_filename='input.txt',
     output_filename='output.mp3',
     voice='Ivy',
-)```
+)
+```

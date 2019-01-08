@@ -6,7 +6,7 @@ with open('README.md') as f:
 
 setup(
     name='audify',
-    version='0.0.1',
+    version='0.0.3',
     description=(
         'A simple command line tool to transform text to speech with AWS.'
     ),
