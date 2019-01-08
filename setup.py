@@ -12,6 +12,7 @@ setup(
     ),
     long_description=README,
     author='Jordon Phillips',
+    author_email='pypi@jkphillips.me',
     license='MIT',
     packages=find_packages(exclude=['tests']),
     url='https://github.com/JordonPhillips/audify',
