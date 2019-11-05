@@ -15,7 +15,11 @@ setup(
     license="MIT",
     packages=find_packages(exclude=["tests"]),
     url="https://github.com/JordonPhillips/audify",
-    install_requires=["boto3>=1.9.75<2.0.0", "pydub>=0.23.0,<1.0.0"],
+    install_requires=[
+        "boto3>=1.9.75<2.0.0",
+        "pydub>=0.23.0,<1.0.0",
+        "tqdm>=4.37.0,<5.0.0",
+    ],
     python_requires="~=3.8",
     keywords="aws polly tts",
     entry_points={"console_scripts": ["audify = audify:main"]},
